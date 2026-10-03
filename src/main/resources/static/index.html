@@ -1,0 +1,1118 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TalentLens | Candidate Manager</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f3f6fb;
+            color: #172554;
+        }
+
+        header {
+            background: #172554;
+            color: white;
+            padding: 25px 6%;
+        }
+
+        header h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            color: #cbd5e1;
+            font-size: 17px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1400px;
+            margin: 35px auto;
+        }
+
+        .page-heading {
+            margin-bottom: 30px;
+        }
+
+        .page-heading h2 {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .page-heading p {
+            color: #64748b;
+            font-size: 17px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(15, 23, 42, 0.06);
+        }
+
+        .card h2 {
+            font-size: 24px;
+            margin-bottom: 25px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+            background: white;
+            color: #172554;
+        }
+
+        input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 9px;
+            color: white;
+            font-size: 15px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        button:hover {
+            opacity: 0.88;
+        }
+
+        button:disabled {
+            background: #cbd5e1 !important;
+            color: #64748b;
+            cursor: not-allowed;
+            opacity: 1;
+        }
+
+        .primary-btn {
+            background: #2563eb;
+        }
+
+        .secondary-btn {
+            background: #64748b;
+        }
+
+        .filter-btn {
+            background: #0f766e;
+        }
+
+        .advanced-btn {
+            background: #7c3aed;
+        }
+
+        .edit-btn {
+            background: #16a34a;
+            padding: 9px 15px;
+        }
+
+        .delete-btn {
+            background: #dc2626;
+            padding: 9px 15px;
+        }
+
+        .cancel-btn {
+            background: #64748b;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .message {
+            margin-top: 15px;
+            font-size: 15px;
+            min-height: 20px;
+        }
+
+        .success-message {
+            color: #15803d;
+        }
+
+        .error-message {
+            color: #dc2626;
+        }
+
+        .search-grid {
+            display: grid;
+            grid-template-columns: minmax(180px, 2fr) auto auto;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .advanced-grid {
+            display: grid;
+            grid-template-columns: minmax(180px, 1fr) minmax(180px, 1fr) auto auto;
+            gap: 12px;
+        }
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 25px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 750px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 16px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 15px;
+        }
+
+        th {
+            background: #f8fafc;
+            color: #334155;
+            font-weight: bold;
+        }
+
+        tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .pagination button {
+            background: #2563eb;
+            min-width: 100px;
+        }
+
+        #pageInfo {
+            color: #475569;
+            font-weight: bold;
+        }
+
+        .candidate-count {
+            color: #64748b;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+
+        .empty-message {
+            text-align: center;
+            color: #64748b;
+            padding: 25px;
+        }
+
+        @media (max-width: 850px) {
+            .search-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .advanced-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .search-grid input {
+                grid-column: 1 / -1;
+            }
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 22px 5%;
+            }
+
+            header h1 {
+                font-size: 27px;
+            }
+
+            .container {
+                width: 92%;
+                margin: 25px auto;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .page-heading h2 {
+                font-size: 25px;
+            }
+
+            .form-grid,
+            .search-grid,
+            .advanced-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-grid input {
+                grid-column: auto;
+            }
+
+            .form-actions button,
+            .search-grid button,
+            .advanced-grid button {
+                width: 100%;
+            }
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            border-left: 5px solid #2563eb;
+            box-shadow: 0 8px 25px rgba(15, 23, 42, 0.06);
+        }
+
+        .stat-card p {
+            color: #64748b;
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+
+        .stat-card h2 {
+            color: #172554;
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .stat-card span {
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>TalentLens</h1>
+    <p>Smart Candidate Management System</p>
+</header>
+
+<main class="container">
+
+    <section class="page-heading">
+        <h2>Candidate Dashboard</h2>
+        <p>Manage, search and organize candidate information.</p>
+    </section>
+
+    <!-- Dashboard Statistics -->
+    <section class="stats-grid">
+        <div class="stat-card">
+            <p>Total Candidates</p>
+            <h2 id="totalCandidates">0</h2>
+            <span>Registered candidates</span>
+        </div>
+        <div class="stat-card" style="border-left-color: #16a34a;">
+            <p>Experienced Candidates</p>
+            <h2 id="experiencedCandidates">0</h2>
+            <span>2+ years of experience</span>
+        </div>
+
+        <div class="stat-card" style="border-left-color: #7c3aed;">
+            <p>Unique Skills</p>
+            <h2 id="totalSkills">0</h2>
+            <span>Different skills in the database</span>
+        </div>
+    </section>
+
+    <!-- Add / Edit Candidate -->
+    <section class="card">
+        <h2 id="formHeading">Add New Candidate</h2>
+
+        <form id="candidateForm">
+            <div class="form-grid">
+                <input
+                        type="text"
+                        id="fullName"
+                        placeholder="Full Name"
+                        required
+                >
+
+                <input
+                        type="email"
+                        id="email"
+                        placeholder="Email Address"
+                        required
+                >
+
+                <input
+                        type="text"
+                        id="skills"
+                        placeholder="Skills (e.g. Java, SQL)"
+                        required
+                >
+
+                <input
+                        type="number"
+                        id="experienceYears"
+                        placeholder="Experience in Years"
+                        min="0"
+                        required
+                >
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="primary-btn" id="submitBtn">
+                    Add Candidate
+                </button>
+
+                <button
+                        type="button"
+                        class="cancel-btn"
+                        id="cancelBtn"
+                        onclick="cancelEdit()"
+                        hidden
+                >
+                    Cancel
+                </button>
+            </div>
+
+            <p id="formMessage" class="message" aria-live="polite"></p>
+        </form>
+    </section>
+
+    <!-- Candidate List -->
+    <section class="card">
+        <h2>Candidate List</h2>
+
+        <!-- Normal Search -->
+        <div class="search-grid">
+            <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search by name or skills..."
+            >
+
+            <button
+                    type="button"
+                    class="primary-btn"
+                    onclick="searchCandidates()"
+            >
+                Search
+            </button>
+
+            <button
+                    type="button"
+                    class="secondary-btn"
+                    onclick="resetSearch()"
+            >
+                Reset
+            </button>
+        </div>
+
+        <!-- Filter and Advanced Search -->
+        <div class="advanced-grid">
+            <input
+                    type="text"
+                    id="searchSkills"
+                    placeholder="Enter skills (e.g. Java, Python)"
+            >
+
+            <input
+                    type="number"
+                    id="minExperience"
+                    placeholder="Min. experience (years)"
+                    min="0"
+            >
+
+            <button
+                    type="button"
+                    class="filter-btn"
+                    onclick="filterCandidates()"
+            >
+                Filter
+            </button>
+
+            <button
+                    type="button"
+                    class="advanced-btn"
+                    onclick="advancedSearch()"
+            >
+                Advanced Search
+            </button>
+        </div>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Skills</th>
+                    <th>Experience</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+
+                <tbody id="candidateTable">
+                <tr>
+                    <td colspan="6" class="empty-message">
+                        Loading candidates...
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <p id="candidateCount" class="candidate-count"></p>
+
+        <!-- Pagination -->
+        <div class="pagination" id="pagination">
+            <button
+                    type="button"
+                    id="prevBtn"
+                    onclick="previousPage()"
+            >
+                Previous
+            </button>
+
+            <span id="pageInfo">Page 1 of 1</span>
+
+            <button
+                    type="button"
+                    id="nextBtn"
+                    onclick="nextPage()"
+            >
+                Next
+            </button>
+        </div>
+    </section>
+
+</main>
+
+<script>
+    const API_URL = "/api/candidates";
+    const PAGE_SIZE = 5;
+
+    const candidateTable = document.getElementById("candidateTable");
+    const candidateForm = document.getElementById("candidateForm");
+
+    let currentPage = 0;
+    let totalPages = 1;
+    let editingId = null;
+
+    // "all" uses backend pagination.
+    // Other modes paginate the returned list in the browser.
+    let currentMode = "all";
+    let currentResults = [];
+
+    // Show messages in the candidate form.
+    function showFormMessage(message, isError = false) {
+        const element = document.getElementById("formMessage");
+        element.textContent = message;
+        element.className = isError
+            ? "message error-message"
+            : "message success-message";
+    }
+
+    // Safely create a table cell with text.
+    function createCell(value) {
+        const cell = document.createElement("td");
+        cell.textContent = value ?? "";
+        return cell;
+    }
+
+    // Render candidate rows safely.
+    function renderRows(candidates) {
+        candidateTable.replaceChildren();
+
+        if (!candidates || candidates.length === 0) {
+            const row = document.createElement("tr");
+            const cell = document.createElement("td");
+
+            cell.colSpan = 6;
+            cell.className = "empty-message";
+            cell.textContent = "No candidates found.";
+
+            row.appendChild(cell);
+            candidateTable.appendChild(row);
+            return;
+        }
+
+        candidates.forEach(candidate => {
+            const row = document.createElement("tr");
+
+            row.appendChild(createCell(candidate.id));
+            row.appendChild(createCell(candidate.fullName));
+            row.appendChild(createCell(candidate.email));
+            row.appendChild(createCell(candidate.skills));
+            row.appendChild(
+                createCell(candidate.experienceYears + " years")
+            );
+
+            const actionCell = document.createElement("td");
+            const actionButtons = document.createElement("div");
+            actionButtons.className = "action-buttons";
+
+            const editButton = document.createElement("button");
+            editButton.type = "button";
+            editButton.textContent = "Edit";
+            editButton.className = "edit-btn";
+            editButton.addEventListener("click", () => {
+                editCandidate(candidate.id);
+            });
+
+            const deleteButton = document.createElement("button");
+            deleteButton.type = "button";
+            deleteButton.textContent = "Delete";
+            deleteButton.className = "delete-btn";
+            deleteButton.addEventListener("click", () => {
+                deleteCandidate(candidate.id);
+            });
+
+            actionButtons.append(editButton, deleteButton);
+            actionCell.appendChild(actionButtons);
+            row.appendChild(actionCell);
+
+            candidateTable.appendChild(row);
+        });
+    }
+
+    // Update pagination UI.
+    function updatePagination(totalItems, page) {
+        document.getElementById("pageInfo").textContent =
+            `Page ${page + 1} of ${totalPages}`;
+
+        document.getElementById("prevBtn").disabled = page <= 0;
+        document.getElementById("nextBtn").disabled =
+            page >= totalPages - 1;
+
+        const start = totalItems === 0 ? 0 : page * PAGE_SIZE + 1;
+        const end = Math.min((page + 1) * PAGE_SIZE, totalItems);
+
+        document.getElementById("candidateCount").textContent =
+            `Showing ${start}-${end} of ${totalItems} candidates`;
+    }
+
+    // Render a locally paginated list (search/filter results).
+    function renderLocalPage(page = 0) {
+        currentPage = Math.max(0, Math.min(page, totalPages - 1));
+
+        const startIndex = currentPage * PAGE_SIZE;
+        const pageCandidates = currentResults.slice(
+            startIndex,
+            startIndex + PAGE_SIZE
+        );
+
+        renderRows(pageCandidates);
+        updatePagination(currentResults.length, currentPage);
+    }
+
+    async function loadTotalCandidates() {
+        try {
+            const response = await fetch(
+                `${API_URL}?page=0&size=1`
+            );
+
+            if (!response.ok) {
+                throw new Error("Unable to fetch candidate count");
+            }
+
+            const result = await response.json();
+
+            document.getElementById("totalCandidates").textContent =
+                result.totalElements ?? 0;
+
+        } catch (error) {
+            console.error("Count error:", error);
+            document.getElementById("totalCandidates").textContent = "—";
+        }
+    }
+
+    async function loadExperiencedCandidates() {
+        try {
+            const response = await fetch(
+                `${API_URL}/filter?minExperience=2`
+            );
+
+            if (!response.ok) {
+                throw new Error("Unable to fetch experienced candidates");
+            }
+
+            const candidates = await response.json();
+
+            document.getElementById("experiencedCandidates").textContent =
+                Array.isArray(candidates) ? candidates.length : 0;
+
+        } catch (error) {
+            console.error("Experienced candidates count error:", error);
+            document.getElementById("experiencedCandidates").textContent = "—";
+        }
+    }
+
+    async function loadSkillsOverview() {
+        try {
+            const response = await fetch(`${API_URL}?page=0&size=1000`);
+
+            if (!response.ok) {
+                throw new Error("Unable to fetch skills");
+            }
+
+            const result = await response.json();
+            const candidates = result.content || [];
+
+            const uniqueSkills = new Set();
+
+            candidates.forEach(candidate => {
+                if (candidate.skills) {
+                    candidate.skills.split(",").forEach(skill => {
+                        const cleanedSkill = skill.trim().toLowerCase();
+                        if (cleanedSkill) {
+                            uniqueSkills.add(cleanedSkill);
+                        }
+                    });
+                }
+            });
+
+            document.getElementById("totalSkills").textContent =
+                uniqueSkills.size;
+
+        } catch (error) {
+            console.error("Skills overview error:", error);
+            document.getElementById("totalSkills").textContent = "—";
+        }
+    }
+
+    // Load all candidates using Spring Boot backend pagination.
+    async function loadCandidates(page = 0) {
+        currentMode = "all";
+        currentPage = Math.max(0, page);
+
+        candidateTable.innerHTML = `
+            <tr>
+                <td colspan="6" class="empty-message">
+                    Loading candidates...
+                </td>
+            </tr>
+        `;
+
+        try {
+            const response = await fetch(
+                `${API_URL}?page=${currentPage}&size=${PAGE_SIZE}`
+            );
+
+            if (!response.ok) {
+                throw new Error("Unable to load candidates");
+            }
+
+            const result = await response.json();
+
+            // Spring Data Page response.
+            const candidates = result.content || [];
+
+            totalPages = Math.max(1, result.totalPages || 1);
+            currentPage = result.number ?? currentPage;
+
+            renderRows(candidates);
+
+            document.getElementById("pageInfo").textContent =
+                `Page ${currentPage + 1} of ${totalPages}`;
+
+            document.getElementById("prevBtn").disabled =
+                currentPage <= 0;
+
+            document.getElementById("nextBtn").disabled =
+                currentPage >= totalPages - 1;
+
+            const totalItems = result.totalElements ?? candidates.length;
+            const start = totalItems === 0
+                ? 0
+                : currentPage * PAGE_SIZE + 1;
+            const end = Math.min(
+                (currentPage + 1) * PAGE_SIZE,
+                totalItems
+            );
+
+            document.getElementById("candidateCount").textContent =
+                `Showing ${start}-${end} of ${totalItems} candidates`;
+
+        } catch (error) {
+            console.error(error);
+            candidateTable.innerHTML = `
+                <tr>
+                    <td colspan="6" class="empty-message">
+                        Unable to load candidates. Please try again.
+                    </td>
+                </tr>
+            `;
+            document.getElementById("candidateCount").textContent = "";
+        }
+    }
+
+    // Add or update candidate.
+    candidateForm.addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        const candidate = {
+            fullName: document.getElementById("fullName").value.trim(),
+            email: document.getElementById("email").value.trim(),
+            skills: document.getElementById("skills").value.trim(),
+            experienceYears: Number(
+                document.getElementById("experienceYears").value
+            )
+        };
+
+        if (
+            !candidate.fullName ||
+            !candidate.email ||
+            !candidate.skills ||
+            document.getElementById("experienceYears").value === ""
+        ) {
+            showFormMessage("Please fill in all fields.", true);
+            return;
+        }
+
+        const isEditing = editingId !== null;
+        const url = isEditing
+            ? `${API_URL}/${editingId}`
+            : API_URL;
+
+        const method = isEditing ? "PUT" : "POST";
+
+        try {
+            const response = await fetch(url, {
+                method: method,
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(candidate)
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(errorText || "Unable to save candidate");
+            }
+
+            showFormMessage(
+                isEditing
+                    ? "Candidate updated successfully!"
+                    : "Candidate added successfully!"
+            );
+
+            candidateForm.reset();
+            editingId = null;
+
+            document.getElementById("formHeading").textContent =
+                "Add New Candidate";
+            document.getElementById("submitBtn").textContent =
+                "Add Candidate";
+            document.getElementById("cancelBtn").hidden = true;
+
+            await loadCandidates(0);
+
+        } catch (error) {
+            console.error(error);
+            showFormMessage(
+                "Error: " + error.message,
+                true
+            );
+        }
+    });
+
+    // Get candidate details and fill the form for editing.
+    async function editCandidate(id) {
+        try {
+            const response = await fetch(`${API_URL}/${id}`);
+
+            if (!response.ok) {
+                throw new Error("Candidate not found");
+            }
+
+            const candidate = await response.json();
+
+            document.getElementById("fullName").value =
+                candidate.fullName ?? "";
+            document.getElementById("email").value =
+                candidate.email ?? "";
+            document.getElementById("skills").value =
+                candidate.skills ?? "";
+            document.getElementById("experienceYears").value =
+                candidate.experienceYears ?? "";
+
+            editingId = id;
+
+            document.getElementById("formHeading").textContent =
+                "Edit Candidate";
+            document.getElementById("submitBtn").textContent =
+                "Update Candidate";
+            document.getElementById("cancelBtn").hidden = false;
+
+            showFormMessage("You are editing candidate ID " + id + ".");
+            document.getElementById("fullName").focus();
+
+        } catch (error) {
+            console.error(error);
+            alert("Unable to load candidate details.");
+        }
+    }
+
+    // Cancel edit mode.
+    function cancelEdit() {
+        editingId = null;
+        candidateForm.reset();
+
+        document.getElementById("formHeading").textContent =
+            "Add New Candidate";
+        document.getElementById("submitBtn").textContent =
+            "Add Candidate";
+        document.getElementById("cancelBtn").hidden = true;
+
+        showFormMessage("");
+    }
+
+    // Delete candidate.
+    async function deleteCandidate(id) {
+        const confirmed = confirm(
+            "Are you sure you want to delete this candidate?"
+        );
+
+        if (!confirmed) {
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_URL}/${id}`, {
+                method: "DELETE"
+            });
+
+            if (!response.ok) {
+                throw new Error("Unable to delete candidate");
+            }
+
+            alert("Candidate deleted successfully!");
+
+            await loadCandidates(0);
+
+        } catch (error) {
+            console.error(error);
+            alert("Error deleting candidate.");
+        }
+    }
+
+    // Display a list returned by search or filter endpoints.
+    function showLocalResults(candidates, mode) {
+        currentMode = mode;
+        currentResults = Array.isArray(candidates) ? candidates : [];
+        totalPages = Math.max(
+            1,
+            Math.ceil(currentResults.length / PAGE_SIZE)
+        );
+
+        renderLocalPage(0);
+    }
+
+    // Search by name or skills.
+    async function searchCandidates() {
+        const keyword =
+            document.getElementById("searchInput").value.trim();
+
+        if (!keyword) {
+            await loadCandidates(0);
+            return;
+        }
+
+        try {
+            const response = await fetch(
+                `${API_URL}/search?keyword=${encodeURIComponent(keyword)}`
+            );
+
+            if (!response.ok) {
+                throw new Error("Search failed");
+            }
+
+            const result = await response.json();
+            const candidates = Array.isArray(result)
+                ? result
+                : (result.content || []);
+
+            showLocalResults(candidates, "search");
+
+        } catch (error) {
+            console.error(error);
+            alert("Unable to search candidates.");
+        }
+    }
+
+    // Filter by minimum experience.
+    async function filterCandidates() {
+        const minExperience =
+            document.getElementById("minExperience").value;
+
+        if (minExperience === "") {
+            await loadCandidates(0);
+            return;
+        }
+
+        if (Number(minExperience) < 0) {
+            alert("Experience cannot be negative.");
+            return;
+        }
+
+        try {
+            const response = await fetch(
+                `${API_URL}/filter?minExperience=${encodeURIComponent(minExperience)}`
+            );
+
+            if (!response.ok) {
+                throw new Error("Filter failed");
+            }
+
+            const result = await response.json();
+            const candidates = Array.isArray(result)
+                ? result
+                : (result.content || []);
+
+            showLocalResults(candidates, "filter");
+
+        } catch (error) {
+            console.error(error);
+            alert("Unable to filter candidates.");
+        }
+    }
+
+    // Search by skills and/or minimum experience.
+    async function advancedSearch() {
+        const skills =
+            document.getElementById("searchSkills").value.trim();
+
+        const minExperience =
+            document.getElementById("minExperience").value;
+
+        if (skills === "" && minExperience === "") {
+            alert("Please enter skills or minimum experience.");
+            return;
+        }
+
+        if (minExperience !== "" && Number(minExperience) < 0) {
+            alert("Experience cannot be negative.");
+            return;
+        }
+
+        const params = new URLSearchParams();
+
+        if (skills !== "") {
+            params.append("skills", skills);
+        }
+
+        if (minExperience !== "") {
+            params.append("minExperience", minExperience);
+        }
+
+        try {
+            const response = await fetch(
+                `${API_URL}/search/advanced?${params.toString()}`
+            );
+
+            if (!response.ok) {
+                throw new Error("Advanced search failed");
+            }
+
+            const result = await response.json();
+            const candidates = Array.isArray(result)
+                ? result
+                : (result.content || []);
+
+            showLocalResults(candidates, "advanced");
+
+        } catch (error) {
+            console.error(error);
+            alert("Unable to perform advanced search.");
+        }
+    }
+
+    // Reset all search and filter inputs.
+    async function resetSearch() {
+        document.getElementById("searchInput").value = "";
+        document.getElementById("searchSkills").value = "";
+        document.getElementById("minExperience").value = "";
+
+        await loadCandidates(0);
+    }
+
+    // Go to previous page.
+    async function previousPage() {
+        if (currentPage <= 0) {
+            return;
+        }
+
+        if (currentMode === "all") {
+            await loadCandidates(currentPage - 1);
+        } else {
+            renderLocalPage(currentPage - 1);
+        }
+    }
+
+    // Go to next page.
+    async function nextPage() {
+        if (currentPage >= totalPages - 1) {
+            return;
+        }
+
+        if (currentMode === "all") {
+            await loadCandidates(currentPage + 1);
+        } else {
+            renderLocalPage(currentPage + 1);
+        }
+    }
+
+    // Load candidates when the page opens.
+    document.addEventListener("DOMContentLoaded", function() {
+        loadCandidates(0);
+        loadTotalCandidates();
+        loadExperiencedCandidates();
+        loadSkillsOverview();
+    });
+
+
+</script>
+
+</body>
+</html>
