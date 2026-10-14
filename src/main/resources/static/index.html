@@ -325,6 +325,367 @@
             font-size: 13px;
         }
 
+        /* ===== TalentLens UI Polish: Step 1 ===== */
+
+        /* Smoother page appearance */
+        body {
+            background: #f1f5f9;
+            color: #172554;
+            line-height: 1.5;
+        }
+
+        /* Professional header */
+        header {
+            background: linear-gradient(120deg, #172554, #1e3a8a);
+            padding: 24px 5%;
+            box-shadow: 0 4px 18px rgba(15, 23, 42, 0.12);
+        }
+
+        header h1 {
+            font-size: clamp(28px, 3vw, 36px);
+            font-weight: 750;
+            letter-spacing: -0.7px;
+        }
+
+        header p {
+            margin-top: 4px;
+            font-size: 16px;
+            color: #dbeafe;
+        }
+
+        /* Better content width and spacing */
+        .container {
+            width: min(94%, 1320px);
+            margin: 32px auto;
+        }
+
+        .page-heading {
+            margin-bottom: 24px;
+        }
+
+        .page-heading h2 {
+            font-size: clamp(25px, 3vw, 30px);
+            letter-spacing: -0.5px;
+        }
+
+        .page-heading p {
+            line-height: 1.7;
+        }
+
+        /* Cleaner dashboard and form cards */
+        .card,
+        .stat-card {
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 6px 24px rgba(15, 23, 42, 0.045);
+            transition: box-shadow 0.2s ease,
+            transform 0.2s ease;
+        }
+
+        .card {
+            padding: 28px;
+            border-radius: 16px;
+        }
+
+        .card h2 {
+            letter-spacing: -0.35px;
+        }
+
+        .stat-card {
+            padding: 24px;
+            border-radius: 14px;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+        }
+
+        .stat-card h2 {
+            font-size: 34px;
+            font-weight: 750;
+            letter-spacing: -0.8px;
+        }
+
+        /* Consistent form fields */
+        input {
+            min-height: 48px;
+            border-color: #cbd5e1;
+            transition: border-color 0.2s ease,
+            box-shadow 0.2s ease;
+        }
+
+        input:hover {
+            border-color: #94a3b8;
+        }
+
+        input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+        }
+
+        /* Better buttons and hover feedback */
+        button {
+            font-weight: 600;
+            transition: background-color 0.2s ease,
+            box-shadow 0.2s ease,
+            transform 0.2s ease;
+        }
+
+        button:not(:disabled):hover {
+            opacity: 1;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(15, 23, 42, 0.12);
+        }
+
+        button:focus-visible {
+            outline: 3px solid #93c5fd;
+            outline-offset: 3px;
+        }
+
+        /* More polished candidate table */
+        .table-wrapper {
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            background: #ffffff;
+        }
+
+        table {
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        th {
+            background: #f1f5f9;
+            color: #334155;
+            font-size: 14px;
+            letter-spacing: 0.2px;
+        }
+
+        th,
+        td {
+            padding: 16px;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .action-buttons button {
+            white-space: nowrap;
+        }
+
+        /* Mobile and tablet refinements */
+        @media (max-width: 600px) {
+            .container {
+                width: 94%;
+                margin: 22px auto;
+            }
+
+            .card {
+                padding: 18px;
+                margin-bottom: 20px;
+            }
+
+            .card h2 {
+                font-size: 21px;
+                margin-bottom: 20px;
+            }
+
+            .stats-grid {
+                gap: 14px;
+            }
+
+            .stat-card {
+                padding: 20px;
+            }
+
+            .pagination {
+                gap: 10px;
+            }
+
+            .pagination button {
+                min-width: 85px;
+            }
+        }
+
+        /* Respect users who prefer less animation */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                transition: none !important;
+                animation: none !important;
+            }
+        }
+
+        /* ===== TalentLens Candidate Table Polish ===== */
+
+        .table-wrapper {
+            overflow-x: auto;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            background: #ffffff;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        thead th {
+            background: #f1f5f9;
+            color: #334155;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            white-space: nowrap;
+        }
+
+        th,
+        td {
+            padding: 16px 18px;
+            border-bottom: 1px solid #e8edf4;
+            text-align: left;
+        }
+
+        tbody tr {
+            transition: background-color 0.18s ease;
+        }
+
+        tbody tr:hover {
+            background-color: #f8fafc;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        td {
+            color: #334155;
+            font-size: 14px;
+        }
+
+        /* Consistent table action buttons */
+        td button {
+            padding: 9px 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        td button:active {
+            transform: scale(0.97);
+        }
+
+        /* Keep the table usable on smaller screens */
+        @media (max-width: 768px) {
+            th,
+            td {
+                padding: 12px;
+            }
+
+            td {
+                white-space: nowrap;
+            }
+        }
+
+
+        /* Skill badges */
+        .skill-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 5px 10px;
+            margin: 2px 4px 2px 0;
+            border-radius: 7px;
+            background: #dbeafe;
+            color: #1d4ed8;
+            border: 1px solid #bfdbfe;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        /* Action button consistency */
+        td button {
+            min-width: 66px;
+            padding: 9px 13px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        /* Improve table text alignment */
+        tbody td {
+            vertical-align: middle;
+        }
+
+        tbody tr:hover td {
+            background-color: #f1f5f9;
+        }
+
+
+        /* Professional table action buttons */
+        .action-buttons {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .action-buttons button {
+            min-width: 72px;
+            padding: 9px 14px;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease,
+            box-shadow 0.2s ease,
+            transform 0.2s ease;
+        }
+
+        .action-buttons button:first-child {
+            background: #2563eb;
+            color: #ffffff;
+        }
+
+        .action-buttons button:first-child:hover {
+            background: #1d4ed8;
+        }
+
+        .action-buttons button:last-child {
+            background: #dc2626;
+            color: #ffffff;
+        }
+
+        .action-buttons button:last-child:hover {
+            background: #b91c1c;
+        }
+
+        .action-buttons button:focus-visible {
+            outline: 3px solid #93c5fd;
+            outline-offset: 3px;
+        }
+
+        .action-buttons button:active {
+            transform: scale(0.97);
+        }
+
+        @media (max-width: 600px) {
+            .action-buttons {
+                gap: 6px;
+            }
+
+            .action-buttons button {
+                min-width: 60px;
+                padding: 8px 10px;
+            }
+        }
+
     </style>
 </head>
 
@@ -560,6 +921,29 @@
         return cell;
     }
 
+
+    function createSkillCell(skills) {
+        const cell = document.createElement("td");
+
+        if (!skills || !skills.trim()) {
+            cell.textContent = "—";
+            return cell;
+        }
+
+        skills.split(",")
+            .map(skill => skill.trim())
+            .filter(skill => skill.length > 0)
+            .forEach(skill => {
+                const badge = document.createElement("span");
+                badge.className = "skill-badge";
+                badge.textContent = skill;
+                cell.appendChild(badge);
+            });
+
+        return cell;
+    }
+
+
     // Render candidate rows safely.
     function renderRows(candidates) {
         candidateTable.replaceChildren();
@@ -583,9 +967,12 @@
             row.appendChild(createCell(candidate.id));
             row.appendChild(createCell(candidate.fullName));
             row.appendChild(createCell(candidate.email));
-            row.appendChild(createCell(candidate.skills));
+            row.appendChild(createSkillCell(candidate.skills));
             row.appendChild(
-                createCell(candidate.experienceYears + " years")
+                createCell(
+                    candidate.experienceYears +
+                    (Number(candidate.experienceYears) === 1 ? " year" : " years")
+                )
             );
 
             const actionCell = document.createElement("td");
